@@ -1,0 +1,12 @@
+#-----------------------------------------------------------
+# Vivado v2021.1 (64-bit)
+# SW Build 3247384 on Thu Jun 10 19:36:33 MDT 2021
+# IP Build 3246043 on Fri Jun 11 00:30:35 MDT 2021
+# Start of session at: Fri Dec 10 11:36:58 2021
+# Process ID: 15144
+# Current directory: C:/Users/stijn/Documents/school/2021-2022/digitaal ontwerp/labos/labo5/labo5.runs/impl_1
+# Command line: vivado.exe -log top.vdi -applog -product Vivado -messageDb vivado.pb -mode batch -source top.tcl -notrace
+# Log file: C:/Users/stijn/Documents/school/2021-2022/digitaal ontwerp/labos/labo5/labo5.runs/impl_1/top.vdi
+# Journal file: C:/Users/stijn/Documents/school/2021-2022/digitaal ontwerp/labos/labo5/labo5.runs/impl_1\vivado.jou
+#-----------------------------------------------------------
+source top.tcl -notrace

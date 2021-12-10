@@ -1,0 +1,19 @@
+Time resolution is 1 ps
+SIMULATION START
+Make sure to run for approx. 10 ms
+Testing start-up value... 
+Error: RGB output not LOW
+Time: 20 ns  Iteration: 0  Process: /driver_pwm_rgb_single_tb/STIM_PROC  File: C:/Users/stijn/Documents/school/2021-2022/digitaal ontwerp/labos/labo5/labo5.srcs/sim_1/imports/sources/driver_pwm_rgb_single_tb.vhd
+Setting R to < 1% , G to ~50% , B to 100%
+Waiting until red goes LOW
+Waiting until red goes HIGH
+Test at >1% ... 
+TEST PASSED
+Test at >50% ... 
+TEST PASSED
+Test at <100% ... 
+TEST PASSED
+Test at <1% (new period)... 
+TEST PASSED
+Note: SIMULATION ENDED
+Time: 2052010 ns  Iteration: 0  Process: /driver_pwm_rgb_single_tb/STIM_PROC  File: C:/Users/stijn/Documents/school/2021-2022/digitaal ontwerp/labos/labo5/labo5.srcs/sim_1/imports/sources/driver_pwm_rgb_single_tb.vhd
