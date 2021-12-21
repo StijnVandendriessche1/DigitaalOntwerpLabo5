@@ -1,0 +1,119 @@
+; Program template for the LDOI Mark II processor
+; All numbers are hexadecimal
+; Register use:
+;   R0: 
+;   R1:
+;   R2:
+;   R3: S
+;   R4: M0
+;   R5: M1
+;   R6: H0
+;   R7: H1
+; Address space:
+;   RAM    : 80 - 9F
+;   IRQE   : C0
+;   IRQF   : C1
+;   RGB_R  : B0
+;   RGB_G  : B1
+;   RGB_B  : B2
+;   TRM1S  : D8
+;   SW_H   : E1
+;   SW_L   : E0
+;   BTNS   : E8
+;   LEDS_H : F1
+;   LEDS_L : F0
+;   BCD3   : FB
+;   BCD2   : FA
+;   BCD1   : F9
+;   BCD0   : F8
+; The assembler is not case-sensitive!
+
+#define IRQE    C0		; interrupt enable register memory address
+#define IRQF    C1		; interrupt flags register memory address
+#define TMR_IRQ_MASK  04
+#define BTNS_IRQ_MASK 01
+
+#define RGB_B   D2		; RGB_B PWM output memory address
+#define RGB_G   D1		; RGB_G PWM output memory address
+#define RGB_R   D0		; RGB_R PWM output memory address
+#define RVAL	R2		; GP register for storing current RGB_R value
+#define GVAL	R3		; GP register for storing current RGB_G value
+#define BVAL	R4		; GP register for storing current RGB_B value
+
+#define TRM1S   D8		; 1s timer control register memory address
+#define BTNS    E8		; Buttons input memory address
+
+#define RSEC	R7
+
+; clear seconds register and jump to loop
+reset:
+	jump setup
+
+; on interupt the register holding the seconds will be incremented by one	
+isr:
+	ldr  R0, IRQF ; reading from IRQF will also clear the flags
+	inc RSEC
+	reti
+
+; enable the interupt 1s and clear all registers and jump to loop
+setup:
+	; enable tmr1s irq
+	movl R0, TMR_IRQ_MASK
+	str  IRQE, R0
+	; enable timer
+	movl R0, 01
+	str  TRM1S, R0
+	; set RGB start values
+	movl RVAL, 00
+	movl GVAL, 00
+	movl BVAL, 00
+	movl RSEC, 00
+	jump loop
+
+; output the values in the rgb registers to the registers in the rgb_driver
+; if 9 seconds is reached, reset
+; go to the right subroutine based on a compare
+loop:	; continuously update 7 segment
+	call set_rgb_values
+	cmpl RSEC, 09
+	je reset_seconds
+	cmpl RSEC, 05
+	js green_light
+	je orange_light
+	jg red_light
+	jmp loop
+
+; update pwm outputs subroutine (based on rgb values)
+set_rgb_values:
+	str RGB_R, RVAL
+	str RGB_G, GVAL
+	str RGB_B, BVAL
+	retc
+	
+; set rgb register to green
+green_light:
+	movl RVAL, 00
+	movl GVAL, FF
+	movl BVAL, 00
+	jmp loop
+
+; set rgb light register to orange	
+orange_light:
+	movl RVAL, FF
+	movl GVAL, 45
+	movl BVAL, 00
+	jmp loop ; 
+	
+; set rgb light register to red
+red_light:
+	movl RVAL, FF
+	movl GVAL, 00
+	movl BVAL, 00
+	jmp loop
+
+; set seconds register to 0 and jump to loop
+reset_seconds:
+	movl RSEC, 00
+	jump loop
+	
+; end of program
